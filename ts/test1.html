@@ -170,8 +170,8 @@
             audio: false,
             video: {
                 deviceId: videoSource ? { exact: videoSource } : undefined,
-                width: 3024,
-                height: 4032,
+                width: 1200,
+                height: 1200,
             }
         };
         navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
