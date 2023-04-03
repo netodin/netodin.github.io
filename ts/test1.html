@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <base target="_blank">
+    <title>사진촬영</title>
+</head>
+<style>
+    html,
+    body {
+        margin: 0px;
+        height: 100%;
+    }
+
+    button#snapshot {
+        margin: 0 10px 10px 0;
+        width: 110px;
+    }
+
+    button#cameraon {
+        margin: 0 10px 10px 0;
+        width: 110px;
+    }
+
+    video {
+        object-fit: cover;
+    }
+
+    .container {
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        position: relative;
+        margin: 0px;
+    }
+
+    .guide {
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        margin: 0px;
+    }
+
+    .box {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        /*opacity: 0.2;*/
+    }
+
+    .stack-top {
+        z-index: 9;
+        margin: 0px;
+        /* for demo purpose  */
+    }
+</style>
+<script>
+    'use strict';
+
+    const video = window.video = document.querySelector('video');
+    const canvas = window.canvas = document.querySelector('canvas');
+
+    const snapshotSVG = document.querySelector('svg#svgGuide');
+    const cameraonButton = document.querySelector('button#cameraon');
+    const videoSelect = document.querySelector('select#videoSource');
+    const container = document.querySelector('div#container');
+
+    canvas.ClientWidth = container.width;
+    canvas.ClientHeight = container.height;
+
+    snapshotSVG.onclick = function () {
+        const cw = canvas.width;
+        const ch = canvas.height;
+        canvas.getContext('2d').drawImage(video, 0, 0, cw, ch);
+
+        var hg, wg, r;
+        if (ch / cw > 0.555) {
+            r = cw / 1000.0;
+            hg = (ch - r * 555) / 2;
+            wg = 0;
+        } else {
+            r = ch / 555.0;
+            hg = 0;
+            wg = (cw - r * 1000) / 2;
+        }
+
+        var dr = r;
+        if (dr > 1.0) dr = 1.0;
+
+        const canvasSeal = document.getElementById('canvasSeal');
+        canvasSeal.width = 334 * dr;//400;
+        canvasSeal.height = 326 * dr;//400;
+
+        const ctxSeal = canvasSeal.getContext('2d');
+        ctxSeal.filter = 'grayscale(1) brightness(130%) contrast(130%)';
+        ctxSeal.drawImage(canvas, wg + 58 * r, hg + 138 * r, 334 * r, 326 * r, 0, 0, 334 * dr, 326 * dr);
+        const imageSeal = canvasSeal.toDataURL("image/jpeg", 0.8);
+        const linkSeal = document.createElement("a");
+        linkSeal.href = imageSeal;
+        linkSeal.download = "imageSeal.jpg";
+        document.body.appendChild(linkSeal);
+        linkSeal.click();
+
+        const canvasSign = document.getElementById('canvasSign');
+        canvasSign.width = 508 * dr;//400;
+        canvasSign.height = 214 * dr;//400;
+
+        const ctxSign = canvasSign.getContext('2d');
+        ctxSign.filter = 'grayscale(1) brightness(130%) contrast(130%)';
+        ctxSign.drawImage(canvas, wg + 422 * r, hg + 250 * r, 508 * r, 214 * r, 0, 0, 508 * dr, 214 * dr);
+        const imageSign = canvasSign.toDataURL("image/jpeg", 0.8);
+        const linkSign = document.createElement("a");
+        linkSign.href = imageSign;
+        linkSign.download = "imageSign.jpg";
+        document.body.appendChild(linkSign);
+        linkSign.click();
+
+    };
+
+    function handleSuccess(stream) {
+        const mt = stream.getTracks()[0];
+        const mtc = mt.getCapabilities();
+        const mtset = mt.getSettings();
+        const c = document.querySelector('div#container');
+        const d = c.getBoundingClientRect();
+        const h = d.width * (mtset.height / mtset.width);
+        c.style.height = h + 'px';
+        const g = document.querySelector('div#guide');
+        g.style.height = h + 'px';
+
+        canvas.width = mtset.width;
+        canvas.height = mtset.height;
+
+        window.stream = stream; // make stream available to browser console
+        video.srcObject = stream;
+    }
+
+    function handleError(error) {
+        console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+    }
+
+    cameraonButton.onclick = function () {
+        if (window.stream) {
+            window.stream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+        const videoSource = videoSelect.value;
+        const constraints = {
+            audio: false,
+            video: {
+                deviceId: videoSource ? { exact: videoSource } : undefined,
+                width: 3024,
+                height: 4032,
+            }
+        };
+        navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
+    };
+
+    function gotDevices(deviceInfos) {
+        const value1 = videoSelect.value;
+        while (videoSelect.firstChild) {
+            videoSelect.removeChild(videoSelect.firstChild);
+        }
+        for (let i = 0; i !== deviceInfos.length; ++i) {
+            const deviceInfo = deviceInfos[i];
+            const option = document.createElement('option');
+            option.value = deviceInfo.deviceId;
+            if (deviceInfo.kind === 'audioinput') {
+                //option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+                //audioInputSelect.appendChild(option);
+            } else if (deviceInfo.kind === 'audiooutput') {
+                //option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+                //audioOutputSelect.appendChild(option);
+            } else if (deviceInfo.kind === 'videoinput') {
+                option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+                videoSelect.appendChild(option);
+            } else {
+                //console.log('Some other kind of source/device: ', deviceInfo);
+            }
+        }
+        if (Array.prototype.slice.call(videoSelect.childNodes).some(n => n.value === values)) {
+            videoSelect.value = value1;
+        }
+    }
+
+    navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+</script>
+
+<body>
+
+    <div class="select">
+        <label for="videoSource">S:</label><select id="videoSource"></select> <button id="cameraon">Camera ON</button>
+    </div>
+    <div id="container" class="container">
+        <video playsinline autoplay class="box"></video>
+        <div id="guide" class="guide" style="background: none;">
+            <svg id="svgGuide" height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid">
+                <text x="30" y="60" fill="black" font-size="36">touch</text>
+                <text x="66" y="118" fill="black" font-size="32">Seal</text>
+                <rect x="58" y="138" width="334" height="326"
+                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
+                <text x="430" y="230" fill="black" font-size="32">Sign</text>
+                <rect x="422" y="250" width="508" height="214"
+                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
+                <rect x="1" y="1" width="998" height="554" rx="20" ry="20"
+                    style="fill:none;stroke:blue;stroke-width:4;opacity:0.5;" />
+            </svg>
+        </div>
+    </div>
+    <canvas style="display:none"></canvas>
+    <div id="container2" style="margin:10px;">
+        <P>Seal</P>
+        <canvas id="canvasSeal" style='border:1px solid #000'></canvas>
+        <P>sign</P>
+        <canvas id="canvasSign" style='border:1px solid #000'></canvas>
+    </div>
+</body>
+
+</html>
