@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <base target="_blank">
-    <title>사진촬영</title>
+    <title>서명/인감 촬영 테스트</title>
 </head>
 <style>
     html,
@@ -12,12 +12,6 @@
         margin: 0px;
         height: 100%;
     }
-
-    button#snapshot {
-        margin: 0 10px 10px 0;
-        width: 110px;
-    }
-
     button#cameraon {
         margin: 0 10px 10px 0;
         width: 110px;
@@ -49,13 +43,6 @@
         position: absolute;
         top: 0;
         left: 0;
-        /*opacity: 0.2;*/
-    }
-
-    .stack-top {
-        z-index: 9;
-        margin: 0px;
-        /* for demo purpose  */
     }
 </style>
 <body>
@@ -80,7 +67,7 @@
         </div>
     </div>
     <canvas style="display:none"></canvas>
-    <div id="container2" style="margin:10px;">
+    <div id="container2" style="display:none;margin:10px;">
         <P>Seal</P>
         <canvas id="canvasSeal" style='border:1px solid #000'></canvas>
         <P>sign</P>
