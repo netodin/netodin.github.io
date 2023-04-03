@@ -58,6 +58,35 @@
         /* for demo purpose  */
     }
 </style>
+<body>
+
+    <div class="select">
+        <label for="videoSource">S:</label><select id="videoSource"></select> <button id="cameraon">Camera ON</button>
+    </div>
+    <div id="container" class="container">
+        <video playsinline autoplay class="box"></video>
+        <div id="guide" class="guide" style="background: none;">
+            <svg id="svgGuide" height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid">
+                <text x="30" y="60" fill="black" font-size="36">touch</text>
+                <text x="66" y="118" fill="black" font-size="32">Seal</text>
+                <rect x="58" y="138" width="334" height="326"
+                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
+                <text x="430" y="230" fill="black" font-size="32">Sign</text>
+                <rect x="422" y="250" width="508" height="214"
+                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
+                <rect x="1" y="1" width="998" height="554" rx="20" ry="20"
+                    style="fill:none;stroke:blue;stroke-width:4;opacity:0.5;" />
+            </svg>
+        </div>
+    </div>
+    <canvas style="display:none"></canvas>
+    <div id="container2" style="margin:10px;">
+        <P>Seal</P>
+        <canvas id="canvasSeal" style='border:1px solid #000'></canvas>
+        <P>sign</P>
+        <canvas id="canvasSign" style='border:1px solid #000'></canvas>
+    </div>
+</body>
 <script>
     'use strict';
 
@@ -190,35 +219,5 @@
 
     navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
 </script>
-
-<body>
-
-    <div class="select">
-        <label for="videoSource">S:</label><select id="videoSource"></select> <button id="cameraon">Camera ON</button>
-    </div>
-    <div id="container" class="container">
-        <video playsinline autoplay class="box"></video>
-        <div id="guide" class="guide" style="background: none;">
-            <svg id="svgGuide" height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid">
-                <text x="30" y="60" fill="black" font-size="36">touch</text>
-                <text x="66" y="118" fill="black" font-size="32">Seal</text>
-                <rect x="58" y="138" width="334" height="326"
-                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
-                <text x="430" y="230" fill="black" font-size="32">Sign</text>
-                <rect x="422" y="250" width="508" height="214"
-                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
-                <rect x="1" y="1" width="998" height="554" rx="20" ry="20"
-                    style="fill:none;stroke:blue;stroke-width:4;opacity:0.5;" />
-            </svg>
-        </div>
-    </div>
-    <canvas style="display:none"></canvas>
-    <div id="container2" style="margin:10px;">
-        <P>Seal</P>
-        <canvas id="canvasSeal" style='border:1px solid #000'></canvas>
-        <P>sign</P>
-        <canvas id="canvasSign" style='border:1px solid #000'></canvas>
-    </div>
-</body>
 
 </html>
