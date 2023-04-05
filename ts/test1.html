@@ -11,11 +11,13 @@
     </div>
     <div id="container" style="left:5%;width:90%;height:90%;position:relative;margin:0px;">
         <video playsinline autoplay class="box" style="object-fit:cover;left:0;top:0;width:100%;height:100%;position:absolute;"></video>
-        <div id="guide" class="guide" style="left:0;width:100%;height:100%;position:relative;margin:0px;background: none;">
+        <div onclick="snapshot_onclick();" id="guide" class="guide" style="left:0;width:100%;height:100%;position:relative;margin:0px;background: none;">
             <svg style="left:0;top:0;width:100%;height:100%;position:absolute;">
-                <rect x="0" y="0" width="100%" height="100%" style="fill:#808000;opacity:0.5;"/>
+                <rect x="0" y="0" width="100%" height="100%"
+                style="fill:none;stroke:black;stroke-width:1;stroke-dasharray:2 2;"/>/>
             </svg>
-            <svg id="svgGuide" height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid">
+            <svg height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid"
+            >
                 <text x="30" y="60" fill="black" font-size="36">터치하여 촬영합니다.</text>
                 <text x="66" y="118" fill="black" font-size="34">거래도장</text>
                 <text x="430" y="230" fill="black" font-size="34">서명</text>
@@ -25,7 +27,8 @@
                     <rect x="422" y="250" width="508" height="214" fill="black"/>
                 </mask>
                 <rect id="svgGuide" x="1" y="1" width="997" height="554" rx="20" ry="20"
-                    style="fill:#808080;stroke:black;stroke-width:2;stroke-dasharray:4 4;opacity:0.5;" mask="url(#guide-mask)"/>
+                    style="fill:#808080;stroke:black;stroke-width:2;opacity:0.5;" mask="url(#guide-mask)"
+                    />
             </svg>
         </div>
     </div>
@@ -54,7 +57,7 @@
     // 카메라 촬영
     //    촬영 이미지 크기 배율을 1.0 으로 제한 (약 340 pixel 수준으로 처리)
     //    
-    snapshotSVG.onclick = function () {
+    function snapshot_onclick() {
         const cw = canvas.width;
         const ch = canvas.height;
         canvas.getContext('2d').drawImage(video, 0, 0, cw, ch);
