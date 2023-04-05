@@ -57,12 +57,12 @@
                 <text x="30" y="60" fill="black" font-size="36">touch</text>
                 <text x="66" y="118" fill="black" font-size="32">Seal</text>
                 <text x="430" y="230" fill="black" font-size="32">Sign</text>
-                <clippath id="cut-off">
-                    <rect x="58" y="138" width="334" height="326"/>
-                    <rect x="422" y="250" width="508" height="214"/>
-                </clippath>
+                <mask id="guide-mask">
+                    <rect x="58" y="138" width="334" height="326" fill="white"/>
+                    <rect x="422" y="250" width="508" height="214" fill="white"/>
+                </mask>
                 <rect x="1" y="1" width="998" height="554" rx="20" ry="20"
-                    style="fill:#808080;stroke:blue;stroke-width:4;opacity:0.5;" clip-path="url(#cut-off)"/>
+                    style="fill:#808080;stroke:blue;stroke-width:4;opacity:0.5;" mask="url(#guide-mask)"/>
             </svg>
         </div>
     </div>
