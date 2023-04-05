@@ -56,13 +56,13 @@
             <svg id="svgGuide" height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid">
                 <text x="30" y="60" fill="black" font-size="36">touch</text>
                 <text x="66" y="118" fill="black" font-size="32">Seal</text>
-                <rect x="58" y="138" width="334" height="326"
-                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
                 <text x="430" y="230" fill="black" font-size="32">Sign</text>
-                <rect x="422" y="250" width="508" height="214"
-                    style="fill:none;stroke:red;stroke-width:4;opacity:0.5;stroke-dasharray:5,5;" />
+                <clippath id="cut-off">
+                    <rect x="58" y="138" width="334" height="326"/>
+                    <rect x="422" y="250" width="508" height="214"/>
+                </clippath>
                 <rect x="1" y="1" width="998" height="554" rx="20" ry="20"
-                    style="fill:none;stroke:blue;stroke-width:4;opacity:0.5;" />
+                    style="fill:#808080;stroke:blue;stroke-width:4;opacity:0.5;" clip-path="url(#cut-off)"/>
             </svg>
         </div>
     </div>
@@ -88,6 +88,9 @@
     canvas.ClientWidth = container.width;
     canvas.ClientHeight = container.height;
 
+    // 카메라 촬영
+    //    촬영 이미지 크기 배율을 1.0 으로 제한 (약 340 pixel 수준으로 처리)
+    //    
     snapshotSVG.onclick = function () {
         const cw = canvas.width;
         const ch = canvas.height;
@@ -137,6 +140,7 @@
 
     };
 
+    // 카메라 소스 연결 성공
     function handleSuccess(stream) {
         const mt = stream.getTracks()[0];
         const mtc = mt.getCapabilities();
@@ -155,10 +159,12 @@
         video.srcObject = stream;
     }
 
+    // 카메라 소스 연결 실패
     function handleError(error) {
         console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
     }
 
+    // 카메라 소스 연결 요청
     cameraonButton.onclick = function () {
         if (window.stream) {
             window.stream.getTracks().forEach(track => {
@@ -177,6 +183,7 @@
         navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError);
     };
 
+    // 카메라 모듈 목록 생성
     function gotDevices(deviceInfos) {
         const value1 = videoSelect.value;
         while (videoSelect.firstChild) {
@@ -186,18 +193,10 @@
             const deviceInfo = deviceInfos[i];
             const option = document.createElement('option');
             option.value = deviceInfo.deviceId;
-            if (deviceInfo.kind === 'audioinput') {
-                //option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
-                //audioInputSelect.appendChild(option);
-            } else if (deviceInfo.kind === 'audiooutput') {
-                //option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
-                //audioOutputSelect.appendChild(option);
-            } else if (deviceInfo.kind === 'videoinput') {
+            if (deviceInfo.kind === 'videoinput') {
                 option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
                 videoSelect.appendChild(option);
-            } else {
-                //console.log('Some other kind of source/device: ', deviceInfo);
-            }
+            } 
         }
         if (Array.prototype.slice.call(videoSelect.childNodes).some(n => n.value === values)) {
             videoSelect.value = value1;
