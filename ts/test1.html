@@ -1,61 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <base target="_blank">
     <title>서명/인감 촬영 테스트</title>
 </head>
-<style>
-    html,
-    body {
-        margin: 0px;
-        height: 100%;
-    }
-    button#cameraon {
-        margin: 0 10px 10px 0;
-        width: 110px;
-    }
-
-    video {
-        object-fit: cover;
-    }
-
-    .container {
-        left: 5%;
-        width: 90%;
-        height: 90%;
-        position: relative;
-        margin: 0px;
-    }
-
-    .guide {
-        left: 0;
-        width: 100%;
-        height: 100%;
-        position: relative;
-        margin: 0px;
-    }
-
-    .box {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-</style>
-<body>
-
+<body style="margin:0px;height:100%;">
     <div class="select">
-        <label for="videoSource">S:</label><select id="videoSource"></select> <button id="cameraon">Camera ON</button>
+        <label for="videoSource">S:</label><select id="videoSource"></select> <button id="cameraon" style="margin:0 10px 10px 0;width:110px;">Camera ON</button>
     </div>
-    <div id="container" class="container">
-        <video playsinline autoplay class="box"></video>
-        <svg height="100%" width="100%">
-            <rect x="0" y="0" width="100%" height="100%" style="fill:#808000;opacity:0.5;"/>
-        </svg>
-        <div id="guide" class="guide" style="background: none;">
+    <div id="container" style="left:5%;width:90%;height:90%;position:relative;margin:0px;">
+        <video playsinline autoplay class="box" style="object-fit:cover;left:0;top:0;width:100%;height:100%;position:absolute;"></video>
+        <div id="guide" class="guide" style="left:0;width:100%;height:100%;position:relative;margin:0px;background: none;">
+            <svg height="100%" width="100%">
+                <rect x="0" y="0" width="100%" height="100%" style="fill:#808000;opacity:0.5;"/>
+            </svg>
             <svg id="svgGuide" height="100%" width="100%" viewBox="0 0 1000 555" perserveAspectRatio="xMinYMid">
                 <text x="30" y="60" fill="black" font-size="36">터치하여 촬영합니다.</text>
                 <text x="66" y="118" fill="black" font-size="34">거래도장</text>
